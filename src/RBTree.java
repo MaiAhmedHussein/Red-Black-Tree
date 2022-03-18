@@ -9,4 +9,8 @@ public class RBTree {
 
     }
     private RBNode root;
+    public boolean isEmpty(){
+        return root==null;
+    }
+
 }
