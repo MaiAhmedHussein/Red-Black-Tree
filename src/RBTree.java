@@ -179,8 +179,102 @@ public class RBTree {
         node.right=temp;
         return newNode;
     }
+    public void doubleBlack(RBNode node){
 
 
+    }
+    public void delete(int value){
+       delete(findDeletedNode(root,value));
+    }
+    private RBNode findDeletedNode(RBNode node, int value){
+        while(node!=null){
+            if(value>node.value)
+                node=node.right;
+            else if(value< node.value)
+                node =node.left;
+            else
+                return node;
+        }
+        return null;
+    }
+
+
+    private void delete(RBNode node){
+
+        if(node==null){
+            System.out.println("Node not found!!");
+            return;
+        }
+        //Case 1: The node has no child.
+        // If this node is the root.
+
+        if(node.left==null && node.right==null){
+           if(node == root) {
+               node = null;
+           }else{
+               if(node.getColor()==('R')){
+                   node=null;return;
+               }else{
+                   doubleBlack(node);
+               }
+               node=null;
+           }
+           //Case 2: If the node has 1 child, this child replaces it.
+        }else if(node.right==null || node.left==null){
+
+             if(node.left==null){
+                 //If the node is the root.
+                 if (node==root){
+                     root = node.right;
+                 }else{
+                     // if the node is red then it's child is 100% black, so we don't need to change it.
+                     //Else we have to change it's child's color to black.
+                     if(node.color=='B') {
+                         node.right.setColor('B');
+                     }
+                     RBNode rightChild=node.right;
+                     rightChild.parent=node.parent;
+                     //Let the child replace it's parent place.
+                     if(node.isRightChild()) {
+                         node.parent.right=rightChild;
+                     }else{
+                         node.parent.left=rightChild;
+                     }
+
+
+                 }
+             }else{
+                 //If the node is the root.
+                 if (node==root){
+                     root = node.left;
+                 }else{
+                     // if the node is red then it's child is 100% black, so we don't need to change it.
+                     //Else we have to change it's child's color to black.
+                     if(node.color=='B') {
+                         node.left.setColor('B');
+                     }
+                     RBNode leftChild=node.left;
+                     leftChild.parent=node.parent;
+                     //Let the child replace it's parent place.
+                     if(node.isRightChild()) {
+                         node.parent.right=leftChild;
+                     }else{
+                         node.parent.left=leftChild;
+                     }
+
+
+                 }
+             }
+         //Case 3: The node has 2 children.
+         //Replace the value of the node with the value of the minimum node on it's right subtree,
+         //keeping it's original color as it is.
+        }else{
+            RBNode minRight= getMin(node.right);
+            node.value=minRight.value;
+            delete(minRight);
+            //Again let's remove the minimum node on the original node right subtree, that we have prev. calculated.
+        }
+    }
 
 
 
