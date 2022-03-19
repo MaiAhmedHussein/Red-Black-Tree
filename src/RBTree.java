@@ -274,6 +274,16 @@ public class RBTree {
             delete(minRight);
             //Again let's remove the minimum node on the original node right subtree, that we have prev. calculated.
         }
+
+    }
+    private RBNode getMin(RBNode node){
+        if(node==null) {
+            return null;
+        }
+        while (node.left!=null) {
+            node = node.left;
+        }
+        return node;
     }
 
 
