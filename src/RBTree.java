@@ -79,7 +79,7 @@ public class RBTree {
             traversePreOrder(root.right);
         }
     }
-    ////////////////////////////////////
+    /////////////////////////////////////////////////
     public void  insert(int value){
              root=insert(root,value);
 
@@ -116,6 +116,7 @@ public class RBTree {
             }
 
         }
+        root.color='B';
     }
     private void reColor(RBNode parent,RBNode uncle ,RBNode grandparent){
         uncle.switchColour();
@@ -143,10 +144,30 @@ public class RBTree {
 
     private RBNode rotateRight(RBNode node){
         RBNode newNode=node.left;
-        RBNode temp=newNode.right;
+        //update the left branch
+        node.left=newNode.right;
+        if(node.left!=null){
+            node.left.parent=node;
+        }
+        //update the Right branch
+        //make the right child of new node the previous root
         newNode.right=node;
-        node.left=temp;
+         //update parent of newnode to be as the parent of previous
+        newNode.parent=node.parent;
+        updateParents(node,newNode);
+        //finally the newnode will be the parent of the node
+        node.parent=newNode;
         return newNode;
+    }
+     public void updateParents( RBNode node,RBNode newNode){
+        //must do so the traverse be correct
+         if(node.parent==null)
+             //if parent of old root was null so newnode is the root
+             root=newNode;
+         else if(node.isLeftChild())
+             node.parent.left=newNode;
+         else
+             node.parent.right=newNode;
     }
     private RBNode rotateLeft(RBNode node){
         //right heavy
@@ -157,4 +178,43 @@ public class RBTree {
         return newNode;
     }
 
+
+
+
+
+
+    //    EXAMPLE rotate right   ///
+    /*           'R'10   //grand parent (root)
+    *             /   \
+    (leftnode)'R'6     null
+    (newnode) / \
+    *     'R'4  9'R'
+    * */
+
 }
+/* private RBNode rotateRight(RBNode node){
+        RBNode newNode=node.left;
+        //update the left branch
+        // left of 10 (6) will be new node
+        node.left=newNode.right;
+        //link left of 10 will be 9
+        if(node.left!=null){
+            //check that left heavy
+            //set 10 to be parent of 9
+            node.left.parent=node;
+        }
+        //update the Right branch
+        //make the right child of new node the previous root
+        //let the right child of 6 be 10
+        newNode.right=node;
+         //update parent of newnode to be as the parent of previous
+        newNode.parent=node.parent;
+        updateParents(node,newNode);
+        //finally the newnode will be the parent of the node
+        node.parent=newNode;
+        return newNode;
+    }
+*
+*
+*
+* */
