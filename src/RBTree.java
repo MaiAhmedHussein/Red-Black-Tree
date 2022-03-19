@@ -3,6 +3,7 @@ public class RBTree {
         private RBNode left;
         private RBNode right;
         private RBNode parent;
+        private RBNode sibling;
         private int value;
 
 
@@ -12,6 +13,7 @@ public class RBTree {
              color='R';
         }
         public boolean isLeftChild(){return this==parent.left;}
+        public boolean isRightChild(){return this==parent.right;}
         public void setColor(char color) {
             this.color = color;
         }
