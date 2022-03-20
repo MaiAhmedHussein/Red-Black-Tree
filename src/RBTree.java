@@ -92,7 +92,7 @@ public class RBTree {
         //recursive calls to insert at proper position according to BST properties.
         if (node == null)
             return (new RBNode(value));
-        else if (value.compareToIgnoreCase(node.value) < 0) {
+        else if (value.compareTo(node.value) < 0) {
 
             node.left = insert(node.left, value);
             node.left.parent = node;

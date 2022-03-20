@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Scanner;
 
 public class RBMain {
@@ -11,7 +8,7 @@ public class RBMain {
         TestingTime test= new TestingTime();
          test.test();
 
-        /*Scanner input =new Scanner(System.in);
+        Scanner input =new Scanner(System.in);
         System.out.println("1-insert");
         System.out.println("2-getRoot ");
         System.out.println("3-delete");
@@ -37,7 +34,7 @@ public class RBMain {
 
                 case 2: {
                     System.out.println("The root of the tree :");
-                    tree.getRoot();
+                   System.out.println( tree.getRoot().value);
 
                 }
                 break;
@@ -50,7 +47,7 @@ public class RBMain {
                 case 4: {
                     System.out.println("search for the value :");
                     String value = input.next();
-                    tree.search(value);
+                   System.out.println( tree.search(value));
                 }
                 break;
                 case 5: {
@@ -75,7 +72,7 @@ public class RBMain {
 
                 break;
 
-                case 10:
+                case 8:
                     flag = false;
                     break;
                 default:
@@ -83,7 +80,7 @@ public class RBMain {
 
             }
 
-        }*/
+        }
 
     }
 }
