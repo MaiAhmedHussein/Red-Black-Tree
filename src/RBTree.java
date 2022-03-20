@@ -28,6 +28,7 @@ public class RBTree {
             setColor(color=='R'? 'B':'R');
         }
 
+
     }
     /////////////////////////////////////////////////////////
     private RBNode root;
@@ -180,9 +181,81 @@ public class RBTree {
         return newNode;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void doubleBlack(RBNode node){
+    ///////////////////////////////////////////////////////Maiiiiii/////////////////////////////////////////////////////////////
+    public RBNode sibling(RBNode node){
+        if(node.isLeftChild()){
+            return node.parent.right;
+        }
+        return node.parent.left;
+    }
+    public RBNode doubleBlack(RBNode node){
+        //CASE 0: IF DB IS ROOT
+        if(node.parent == null) {
+            return null;
+        }
+        //CASE 1: IF SIBLING IS RED
+        RBNode sibling = sibling(node);
+        if(sibling.color=='R'){
+            node.parent.color='R';
+            sibling.color='B';
+            if(node.isLeftChild()) {
+                rotateLeft(node.getParent());
+            }
+            else {
+                rotateRight(node.getParent());
+            }
+            return doubleBlack(node);
+        }
 
+        //CASE 2: IF SIBLING IS BLACK AND BOTH CHILDREN ARE BLACK /Nil
+        else if(sibling.left.color=='B' && sibling.right.color=='B'){
+            RBNode parent = node.parent;
+            sibling.color='R';
+            if(parent.color=='R') {
+                parent.color = 'B';
+            }else {
+                return doubleBlack(parent);
+            }
+
+        }
+        //CASE 3: If black sibling has at least one red child.
+        //Case near:
+        else if (sibling.isLeftChild() && sibling.left.color=='R' || sibling.isRightChild() && sibling.right.color=='R')
+        {
+            char f = node.parent.color;
+            node.getParent().setColor(sibling.getColor());
+            sibling.setColor(f);
+            //TODO dasd
+            if(sibling.isLeftChild()){
+                sibling.left.color='B';
+            }else {
+                sibling.right.color='B';
+            }
+
+            if( node.isLeftChild()) {
+                rotateLeft(node.getParent());
+            }else {
+                rotateRight(node.getParent());
+            }
+
+        }
+        //Case Far:
+        else{
+            sibling.color='R';
+            if(sibling.isLeftChild()){
+                sibling.right.color='B';
+            }else {
+                sibling.left.color='B';
+            }
+            if(sibling.isLeftChild()){
+                rotateLeft(sibling);
+            }else{
+                rotateRight(sibling);
+            }
+            return doubleBlack(node);
+        }
+
+        return null;
 
     }
     public void delete(int value){
