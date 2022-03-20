@@ -100,7 +100,7 @@ public class RBTree {
                 if (node.color == 'R' && node.left.color == 'R')
                     isRedParent = true;
             }
-        } else {
+        } else if(value.compareToIgnoreCase(node.value) > 0) {
             node.right = insert(node.right, value);
             node.right.parent = node;
             if (node != this.root) {
@@ -268,78 +268,80 @@ public class RBTree {
         }
         //CASE 1: IF SIBLING IS RED
         RBNode sibling = sibling(node);
-        //System.out.println(node.color);
-        if (sibling.color == 'R') {
-            node.parent.color = 'R';
-            sibling.color = 'B';
-            if (node.isLeftChild()) {
-                node.parent.left = null;
-                rotateLeft(node.parent);
-            } else {
-                node.parent.right = null;
-                rotateRight(node.parent);
-            }
-            return doubleBlack(node);
-        }
+        if(sibling!=null) {
+            //System.out.println(node.color);
+            if (sibling.color == 'R') {
+                node.parent.color = 'R';
+                sibling.color = 'B';
+                if (node.isLeftChild()) {
+                    node.parent.left = null;
+                    rotateLeft(node.parent);
+                } else {
+                    node.parent.right = null;
+                    rotateRight(node.parent);
+                }
 
-        //CASE 2: IF SIBLING IS BLACK AND BOTH CHILDREN ARE BLACK /Nil
-        else if (sibling.left != null && sibling.right != null && sibling.left.color == 'B' && sibling.right.color == 'B') {
-            RBNode parent = node.parent;
-            sibling.color = 'R';
-            if (parent.color == 'R') {
-                parent.color = 'B';
-            } else {
-                return doubleBlack(parent);
+                return doubleBlack(node);
             }
 
-        }
-        //CASE 3: If black sibling has at least one red child.
-        //Case near:
-        else if (sibling.isLeftChild() && sibling.left != null && sibling.left.color == 'R' || sibling.isRightChild() && sibling.right != null && sibling.right.color == 'R') {
-            //System.out.println("llll");
-            //traversePreOrder();
-            char f = node.parent.color;
-            node.parent.color = sibling.color;
-            sibling.color = f;
+            //CASE 2: IF SIBLING IS BLACK AND BOTH CHILDREN ARE BLACK /Nil
+            else if (sibling.left != null && sibling.right != null && sibling.left.color == 'B' && sibling.right.color == 'B') {
+                RBNode parent = node.parent;
+                sibling.color = 'R';
+                if (parent.color == 'R') {
+                    parent.color = 'B';
+                } else {
+                    return doubleBlack(parent);
+                }
 
-            if (sibling.left != null && sibling.isLeftChild()) {
-                sibling.left.color = 'B';
-            } else if(sibling.right != null){
-                sibling.right.color = 'B';
             }
-
-            if (node.isLeftChild()) {
-                node.parent.left = null;
-
+            //CASE 3: If black sibling has at least one red child.
+            //Case near:
+            else if (sibling.isLeftChild() && sibling.left != null && sibling.left.color == 'R' || sibling.isRightChild() && sibling.right != null && sibling.right.color == 'R') {
+                //System.out.println("llll");
                 //traversePreOrder();
-                //System.out.println("kkkkk");
-                rotateLeft(node.parent);
-                //traversePreOrder();
-            } else {
-                node.parent.right = null;
-                rotateRight(node.parent);
-            }
+                char f = node.parent.color;
+                node.parent.color = sibling.color;
+                sibling.color = f;
 
+                if (sibling.left != null && sibling.isLeftChild()) {
+                    sibling.left.color = 'B';
+                } else if (sibling.right != null) {
+                    sibling.right.color = 'B';
+                }
+
+                if (node.isLeftChild()) {
+                    node.parent.left = null;
+
+                    //traversePreOrder();
+                    //System.out.println("kkkkk");
+                    rotateLeft(node.parent);
+                    //traversePreOrder();
+                } else {
+                    node.parent.right = null;
+                    rotateRight(node.parent);
+                }
+
+            }
+            //Case Far:
+            else {
+                sibling.color = 'R';
+                if (sibling.right != null && sibling.isLeftChild()) {
+                    sibling.right.color = 'B';
+                } else if (sibling.left != null) {
+
+                    sibling.left.color = 'B';
+                }
+                if (sibling.isLeftChild()) {
+                    node.parent.left = null;
+                    rotateLeft(sibling);
+                } else {
+                    node.parent.right = null;
+                    rotateRight(sibling);
+                }
+                return doubleBlack(node);
+            }
         }
-        //Case Far:
-        else {
-            sibling.color = 'R';
-            if (sibling.right != null && sibling.isLeftChild()) {
-                sibling.right.color = 'B';
-            } else if(sibling.left != null){
-
-                sibling.left.color = 'B';
-            }
-            if (sibling.isLeftChild()) {
-                node.parent.left = null;
-                rotateLeft(sibling);
-            } else {
-                node.parent.right = null;
-                rotateRight(sibling);
-            }
-            return doubleBlack(node);
-        }
-
         return null;
 
     }
@@ -364,7 +366,7 @@ public class RBTree {
     private void delete(RBNode node) {
 
         if (node == null) {
-            System.out.println("Node not found!!");
+           // System.out.println("Node not found!!");
             return;
         }
         //Case 1: The node has no child.
@@ -444,7 +446,7 @@ public class RBTree {
             delete(minRight);
             //Again let's remove the minimum node on the original node right subtree, that we have prev. calculated.
         }
-
+    // System.out.println("deleted successfully");
     }
 
     private RBNode getMin(RBNode node) {
