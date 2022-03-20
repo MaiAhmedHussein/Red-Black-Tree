@@ -8,7 +8,7 @@ public class TestingTime {
         ArrayList<String> list = new ArrayList<>();
         RandomString random = new RandomString();
         long startInsert = System.currentTimeMillis();
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 100; i++) {
             String s = random.randomString();
             list.add(s);
             tree.insert(s);

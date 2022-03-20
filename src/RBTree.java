@@ -269,22 +269,22 @@ public class RBTree {
         //CASE 1: IF SIBLING IS RED
         RBNode sibling = sibling(node);
         if(sibling!=null) {
-            //System.out.println(node.color);
             if (sibling.color == 'R') {
                 node.parent.color = 'R';
                 sibling.color = 'B';
                 if (node.isLeftChild()) {
-                    node.parent.left = null;
-                    rotateLeft(node.parent);
+                    RBNode n =node.parent;
+                    n.left = null;
+                    rotateLeft(n);
                 } else {
-                    node.parent.right = null;
-                    rotateRight(node.parent);
+                    RBNode n =node.parent;
+                    n.right = null;
+                    rotateRight(n);
                 }
-
                 return doubleBlack(node);
             }
 
-            //CASE 2: IF SIBLING IS BLACK AND BOTH CHILDREN ARE BLACK /Nil
+//CASE 2: IF SIBLING IS BLACK AND BOTH CHILDREN ARE BLACK /Nil
             else if (sibling.left != null && sibling.right != null && sibling.left.color == 'B' && sibling.right.color == 'B') {
                 RBNode parent = node.parent;
                 sibling.color = 'R';
@@ -295,47 +295,47 @@ public class RBTree {
                 }
 
             }
-            //CASE 3: If black sibling has at least one red child.
-            //Case near:
+//CASE 3: If black sibling has at least one red child.
+//Case near:
             else if (sibling.isLeftChild() && sibling.left != null && sibling.left.color == 'R' || sibling.isRightChild() && sibling.right != null && sibling.right.color == 'R') {
                 //System.out.println("llll");
                 //traversePreOrder();
                 char f = node.parent.color;
                 node.parent.color = sibling.color;
                 sibling.color = f;
-
                 if (sibling.left != null && sibling.isLeftChild()) {
                     sibling.left.color = 'B';
-                } else if (sibling.right != null) {
+                } else if(sibling.right != null){
                     sibling.right.color = 'B';
                 }
 
                 if (node.isLeftChild()) {
-                    node.parent.left = null;
-
+                    RBNode n =node.parent;
+                    n.left = null;
                     //traversePreOrder();
                     //System.out.println("kkkkk");
-                    rotateLeft(node.parent);
+                    rotateLeft(n);
                     //traversePreOrder();
                 } else {
-                    node.parent.right = null;
-                    rotateRight(node.parent);
+                    RBNode n =node.parent;
+                    n.right = null;
+                    rotateRight(n);
                 }
 
             }
-            //Case Far:
+//Case Far:
             else {
                 sibling.color = 'R';
                 if (sibling.right != null && sibling.isLeftChild()) {
                     sibling.right.color = 'B';
-                } else if (sibling.left != null) {
+                } else if(sibling.left != null){
 
                     sibling.left.color = 'B';
                 }
-                if (sibling.isLeftChild()) {
+                if (sibling.right != null && sibling.isLeftChild()) {
                     node.parent.left = null;
                     rotateLeft(sibling);
-                } else {
+                } else if(sibling.left != null){
                     node.parent.right = null;
                     rotateRight(sibling);
                 }
@@ -345,9 +345,11 @@ public class RBTree {
         return null;
 
     }
-
-    public void delete(String value) {
+    boolean flagdelete=true;
+    public boolean delete(String value) {
+        flagdelete=true;
         delete(findDeletedNode(root, value));
+        return flagdelete;
     }
 
     private RBNode findDeletedNode(RBNode node, String value) {
@@ -366,7 +368,7 @@ public class RBTree {
     private void delete(RBNode node) {
 
         if (node == null) {
-           // System.out.println("Node not found!!");
+           flagdelete=false;
             return;
         }
         //Case 1: The node has no child.
