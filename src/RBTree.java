@@ -4,7 +4,7 @@ public class RBTree {
         RBNode right;
         RBNode parent;
         RBNode sibling;
-        int value;
+        String value;
 
         public boolean isRightChild() {
             return this == parent.right;
@@ -12,7 +12,7 @@ public class RBTree {
 
         private char color;
 
-        RBNode(int value) {
+        RBNode(String value) {
             this.value = value;
             color = 'R';
         }
@@ -44,12 +44,12 @@ public class RBTree {
         root = null;
     }
 
-    public String search(int value) {
+    public String search(String value) {
         var current = root;
         while (current != null) {
-            if (value > current.value)
+            if (value.compareToIgnoreCase(current.value)>0)
                 current = current.right;
-            else if (value < current.value)
+            else if (value.compareToIgnoreCase(current.value)<0)
                 current = current.left;
             else
                 return "The searched  word" + " " + current.value + " " + "\'" + current.color + "\'" + "is Found";
@@ -57,12 +57,12 @@ public class RBTree {
         return null;
     }
 
-    public boolean contain(int value) {
+    public boolean contain(String value) {
         var current = root;
         while (current != null) {
-            if (value > current.value)
+            if (value.compareToIgnoreCase(current.value)>0)
                 current = current.right;
-            else if (value < current.value)
+            else if (value.compareToIgnoreCase(current.value)<0)
                 current = current.left;
             else
                 return true;
@@ -77,7 +77,7 @@ public class RBTree {
     boolean leftRightRotation = false;
     boolean rightLeftRotation = false;
 
-    public void insert(int value) {
+    public void insert(String value) {
         if (this.root == null) {
             this.root = new RBNode(value);
             this.root.color = 'B';
@@ -88,12 +88,12 @@ public class RBTree {
     /*
     insert and check if need red black rules
     * */
-    private RBNode insert(RBNode node, int value) {
+    private RBNode insert(RBNode node, String value) {
         //recursive calls to insert at proper position according to BST properties.
         if (node == null)
             return (new RBNode(value));
-            //else if (value.compareToIgnoreCase(node.value) < 0) {
-        else if (value < node.value) {
+        else if (value.compareToIgnoreCase(node.value) < 0) {
+
             node.left = insert(node.left, value);
             node.left.parent = node;
             if (node != this.root) {
@@ -344,15 +344,15 @@ public class RBTree {
 
     }
 
-    public void delete(int value) {
+    public void delete(String value) {
         delete(findDeletedNode(root, value));
     }
 
-    private RBNode findDeletedNode(RBNode node, int value) {
+    private RBNode findDeletedNode(RBNode node, String value) {
         while (node != null) {
-            if (value > node.value)
+            if (value.compareToIgnoreCase(node.value)>0)
                 node = node.right;
-            else if (value < node.value)
+            else if (value.compareToIgnoreCase(node.value)<0)
                 node = node.left;
             else
                 return node;

@@ -1,7 +1,7 @@
 public class RBMain {
     public static void main(String[] arg){
         RBTree tree=new RBTree();
-        tree.insert(30);
+        /*tree.insert(30);
         tree.insert(20);
         tree.insert(40);
         tree.insert(50);
@@ -10,6 +10,6 @@ public class RBMain {
         tree.traversePreOrder();
         System.out.println("\n");
         tree.delete(20);
-        tree.traversePreOrder();
+        tree.traversePreOrder();*/
     }
 }
